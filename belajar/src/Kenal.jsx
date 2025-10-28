@@ -1,15 +1,24 @@
-// Kenal.jsx
-import React from 'react';
+import { useState } from "react";
 
-// Pastikan komponen menerima props (nama, umur, alamat)
-function Kenal(props) {
+function Kenal() {
+  // Membuat state count
+  const [count, setCount] = useState(0);
+
+  // Fungsi tambah dan reset
+  const tambah = () => setCount(count + 1);
+  const reset = () => setCount(0);
+
   return (
-    <div style={{ border: "1px solid #ccc", margin: "10px 0", padding: "10px" }}>
-      <h2>Halo, nama saya {props.nama}</h2>
-      <p>
-        Umur: {props.umur} tahun. <br />
-        Alamat: {props.alamat}
-      </p>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>Halo! Ini contoh count button pakai useState</h2>
+      <p>Kamu telah menekan tombol sebanyak:</p>
+      <h3>{count} kali</h3>
+
+      <button onClick={tambah} style={{ marginRight: "10px" }}>
+        Tambah
+      </button>
+
+      <button onClick={reset}>Reset</button>
     </div>
   );
 }
