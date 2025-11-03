@@ -1,25 +1,61 @@
-import React, { useState, useEffect } from "react";
-import Kenal from "./Kenal"; // mengimpor komponen anak
+import { useState, useEffect } from "react";
 
 function App() {
-  const [pesan, setPesan] = useState("Selamat datang di React!");
-  const [waktu, setWaktu] = useState(new Date().toLocaleTimeString());
+  const [users, setUsers] = useState([]); // buat nyimpan data API
+  const [loading, setLoading] = useState(true); // indikator loading
 
-  // useEffect dijalankan setelah komponen pertama kali dimuat
   useEffect(() => {
-    const timer = setInterval(() => {
-      setWaktu(new Date().toLocaleTimeString());
-    }, 1000);
-
-    // cleanup agar tidak terjadi memory leak
-    return () => clearInterval(timer);
-  }, []);
+    // fetch API saat komponen pertama kali tampil
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json()) // ubah data ke JSON
+      .then((data) => {
+        setUsers(data); // simpan data ke state
+        setLoading(false); // matikan loading
+      })
+      .catch((error) => {
+        console.error("Gagal mengambil data API:", error);
+        setLoading(false);
+      });
+  }, []); // [] agar hanya dijalankan sekali saat komponen di-render
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px", fontFamily: "Arial" }}>
-      <h1>Program Simple useEffect</h1>
-      <Kenal nama="Iin Cahyadita" pesan={pesan} />
-      <h3>Waktu sekarang: {waktu}</h3>
+    <div style={{ padding: "20px", textAlign: "center" }}>
+      <h1>Daftar Pengguna (Studi Kasus: Sistem Keanggotaan)</h1>
+
+      {loading ? (
+        <p>Sedang mengambil data pengguna...</p>
+      ) : (
+        <table
+          border="1"
+          cellPadding="10"
+          style={{
+            borderCollapse: "collapse",
+            margin: "20px auto",
+            width: "80%",
+          }}
+        >
+          <thead>
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+              <th>ID</th>
+              <th>Nama</th>
+              <th>Email</th>
+              <th>Kota</th>
+              <th>Perusahaan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.address.city}</td>
+                <td>{user.company.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

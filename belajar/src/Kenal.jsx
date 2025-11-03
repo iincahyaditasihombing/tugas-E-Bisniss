@@ -1,11 +1,12 @@
-import React from "react";
-
-function Kenal({ nama, pesan }) {
+function Kenal({ id, name, email, city, company }) {
   return (
-    <div>
-      <h2>Halo, {nama}!</h2>
-      <p>{pesan}</p>
-    </div>
+    <tr>
+      <td>{id}</td>
+      <td>{name}</td>
+      <td>{email}</td>
+      <td>{city}</td>
+      <td>{company}</td>
+    </tr>
   );
 }
 
