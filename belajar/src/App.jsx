@@ -1,63 +1,32 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/home";
+import Contact from "./pages/contact";
+import About from "./pages/about";
+import Login from "./pages/login";
 
-function App() {
-  const [users, setUsers] = useState([]); // buat nyimpan data API
-  const [loading, setLoading] = useState(true); // indikator loading
-
-  useEffect(() => {
-    // fetch API saat komponen pertama kali tampil
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json()) // ubah data ke JSON
-      .then((data) => {
-        setUsers(data); // simpan data ke state
-        setLoading(false); // matikan loading
-      })
-      .catch((error) => {
-        console.error("Gagal mengambil data API:", error);
-        setLoading(false);
-      });
-  }, []); // [] agar hanya dijalankan sekali saat komponen di-render
-
+export default function App() {
   return (
-    <div style={{ padding: "20px", textAlign: "center" }}>
-      <h1>Daftar Pengguna (Studi Kasus: Sistem Keanggotaan)</h1>
+    <div className="app">
+      <nav className="navbar">
+        <h1 className="brand">REKOMENDASI MATKUL</h1>
+        <div className="nav-links">
+          <Link to="/">Home</Link>
+          <Link to="/about">About Us</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/login">Login</Link>
+        </div>
+      </nav>
 
-      {loading ? (
-        <p>Sedang mengambil data pengguna...</p>
-      ) : (
-        <table
-          border="1"
-          cellPadding="10"
-          style={{
-            borderCollapse: "collapse",
-            margin: "20px auto",
-            width: "80%",
-          }}
-        >
-          <thead>
-            <tr style={{ backgroundColor: "#f2f2f2" }}>
-              <th>ID</th>
-              <th>Nama</th>
-              <th>Email</th>
-              <th>Kota</th>
-              <th>Perusahaan</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.address.city}</td>
-                <td>{user.company.name}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {/* Bagian isi halaman */}
+      <main className="content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </main>
     </div>
   );
 }
-
-export default App;
